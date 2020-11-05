@@ -8,7 +8,7 @@
   
   - name: starting roles
     include_role:
-      name: {{ item }}
+      name: '{{ item }}'
     with_items:
       - 'frappe-user'
       - 'docker_setup'

@@ -15,3 +15,10 @@
 - name: Execute the script
   command: 'usermod -aG docker {{ user_name }}'
   become: true
+- name: installing bench from pip3
+  pip:
+    name: "{{ item }}"
+    executable: pip3
+  with_items:
+    - "docker-compose"
+  become: yes

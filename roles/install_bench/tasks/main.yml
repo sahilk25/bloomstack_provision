@@ -51,10 +51,10 @@
     global: yes
   become: true
 
-- name: adding bench and Validate the sudoers file before saving
-  lineinfile:
-    path: /etc/sudoers.d/frappe
-    state: present
-    line: '{{ user_name }} ALL = (root) /usr/local/bin/bench'
-    validate: /usr/sbin/visudo -cf %s
-  become: yes
+# - name: adding bench and Validate the sudoers file before saving
+#   lineinfile:
+#     path: /etc/sudoers.d/frappe
+#     state: present
+#     line: '{{ user_name }} ALL = (root) /usr/local/bin/bench'
+#     validate: /usr/sbin/visudo -cf %s
+#   become: yes
