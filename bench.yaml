@@ -1,0 +1,15 @@
+- name: installing bench 
+  hosts: localhost
+  become: yes
+  gather_facts: true
+  vars:
+    user_name: frappe
+  tasks:
+  
+  - name: starting roles
+    include_role:
+      name: {{ item }}
+    with_items:
+      - 'frappe-user'
+      - 'docker_setup'
+      - 'install_bench'

@@ -1,0 +1,9 @@
+---
+- name: Create user frappe
+  user:
+    name: "{{ user_name }}"
+    password: "{{ user_password }}"
+    shell: /bin/bash
+    state: present
+  become: yes
+  become_method: "sudo"

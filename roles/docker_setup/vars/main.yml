@@ -1,0 +1,4 @@
+---
+# vars file for docker_setup
+user_name: frappe
+frappe_home: '/home/{{ user_name }}'

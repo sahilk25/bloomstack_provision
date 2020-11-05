@@ -1,0 +1,6 @@
+---
+# vars file for frappe-user
+git_pub: "{{ lookup('aws_ssm', 'git_pub', region='{{ region }}' ) }}"
+git_pri: "{{ lookup('aws_ssm', 'git_pri', region='{{ region }}' ) }}"
+user_name: frappe
+user_password: frappe@123

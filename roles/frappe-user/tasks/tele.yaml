@@ -1,0 +1,7 @@
+---
+- name: send a message to chat in playbook
+  telegram:
+    token: '1329058293:AAFJVLHFDq5oLENktXy47RhO50nKhEzOt7I'
+    chat_id: 959089043
+    msg: '{{ item }} are created'
+

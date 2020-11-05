@@ -1,0 +1,28 @@
+---
+- name: making pub key
+  lineinfile:
+    path: '/home/{{ user_name }}/.ssh/id_rsa.pub'
+    state: present
+    line: "{{ git_pub }}"
+    create: yes
+  become_user: '{{  user_name }}'
+
+- name: making pvt key
+  lineinfile:
+    path: '/home/{{  user_name }}/.ssh/id_rsa'
+    state: present
+    line: "{{ git_pri }}"
+    create: yes
+  become_user: '{{  user_name }}'
+
+- name: changing keys permission
+  command: "{{  user_name }}"
+  args:
+    chdir: "/home/{{  user_name }}"
+  with_ user_names:
+    - "touch /home/{{  user_name }}/.ssh/known_hosts"
+    - "sudo chown {{  user_name }}:{{  user_name }}  -R /home/{{  user_name }}"
+    - "sudo chmod 600 {{  user_name }}/.ssh/id_rsa"
+    - "sudo chmod 644 {{  user_name }}/.ssh/id_rsa.pub"
+    - "sudo chown {{  user_name }}:{{  user_name }}  -R /home/{{  user_name }}"
+  become: true

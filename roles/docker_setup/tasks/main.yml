@@ -1,0 +1,17 @@
+---
+# tasks file for docker_setup
+- name: Create a db directory if it does not exist  # creating directory of rds
+  file:
+    path: '{{ frappe_home }}/docker'
+    state: directory
+- name: Download docker.sh
+  get_url:
+    url: https://get.docker.com
+    dest: '{{ frappe_home }}/docker/get-docker.sh'
+    mode: '0755'
+- name: Execute the script
+  command: 'sh {{ frappe_home }}/docker/get-docker.sh'
+  become: true
+- name: Execute the script
+  command: 'usermod -aG docker {{ user_name }}'
+  become: true

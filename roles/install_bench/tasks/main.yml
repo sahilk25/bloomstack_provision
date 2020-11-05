@@ -1,0 +1,60 @@
+---
+# tasks file for install_bench
+- name: Install a list of packages
+  apt:
+    pkg:
+      - 'nginx'
+      - 'supervisor'
+      - 'python3-pip'
+      - 'mysql-client'
+      - 'xfonts-75dpi'
+      - 'redis-tools'
+    state: present
+  become: true
+
+- name: Install wkhtmltopdf
+  apt:
+    deb: https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb
+  become: True
+
+- name: Ensure supervisor launches on boot
+  become: yes
+  command: sudo systemctl enable supervisor nginx
+
+- name: Ensure supervisor launches on boot
+  become: yes
+  command: sudo systemctl restart supervisor nginx
+
+- name: installing bench from pip3
+  pip:
+    name: "{{ item }}"
+    executable: pip3
+  with_items:
+    - "git+https://github.com/DigiThinkIT/bench.git@master"
+    - "PyMySQL"
+  become: yes
+
+- name: 'Add Node.js PPA'
+  tags: 'nodejs'
+  become: true
+  become_method: 'sudo'
+  shell: "curl --silent --location https://deb.nodesource.com/setup_{{ node_version }}.x | bash -"
+
+- name: Install nodejs {{ node_version }}
+  package:
+    name: nodejs
+    state: present
+  become: true
+- name: Install "yarn" node.js package globally.
+  npm:
+    name: yarn
+    global: yes
+  become: true
+
+- name: adding bench and Validate the sudoers file before saving
+  lineinfile:
+    path: /etc/sudoers.d/frappe
+    state: present
+    line: '{{ user_name }} ALL = (root) /usr/local/bin/bench'
+    validate: /usr/sbin/visudo -cf %s
+  become: yes
