@@ -4,6 +4,7 @@
   file:
     path: '{{ frappe_home }}/docker'
     state: directory
+  become_user: '{{ user_name }}'
 - name: Download docker.sh
   get_url:
     url: https://get.docker.com
@@ -21,6 +22,14 @@
     executable: pip3
   with_items:
     - "docker-compose"
+  become: yes
+- name: Download foo.conf
+  get_url:
+    url: https://github.com/chaifeng/ufw-docker/raw/master/ufw-docker
+    dest: /usr/local/bin/ufw-docker
+    mode: '0755'
+- name: ufw-docker install
+  shell: 'ufw-docker install'
   become: yes
 
 - name: doing docker-compose

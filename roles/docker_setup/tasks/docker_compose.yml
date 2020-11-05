@@ -3,6 +3,7 @@
   file:
     path: '{{ frappe_home }}/docker/db_conf'
     state: directory
+  become_user: '{{ user_name }}'
 - name: create docker-compose
   template:
     src: 'templates/docker_compose.yaml.j2'

@@ -13,3 +13,4 @@
       - 'frappe-user'
       - 'docker_setup'
       - 'install_bench'
+      - 'firewall_ufw'
