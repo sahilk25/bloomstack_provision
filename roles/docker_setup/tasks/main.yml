@@ -22,3 +22,6 @@
   with_items:
     - "docker-compose"
   become: yes
+
+- name: doing docker-compose
+  import_tasks: docker_compose.yml

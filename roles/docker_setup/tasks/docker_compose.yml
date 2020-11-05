@@ -6,14 +6,14 @@
 - name: create docker-compose
   template:
     src: 'templates/docker_compose.yaml.j2'
-    dest: '{{ frappe_home }}/docker'
+    dest: '{{ frappe_home }}/docker/docker_compose.yaml'
     owner: '{{ user_name }}'
     group: '{{ user_name }}'
     mode: '0755'
 - name: create frappe_db.conf
   template:
     src: 'templates/frappe_db.conf.j2'
-    dest: '{{ frappe_home }}/docker/db_conf'
+    dest: '{{ frappe_home }}/docker/db_conf/frappe_db.conf'
     owner: '{{ user_name }}'
     group: '{{ user_name }}'
     mode: '0755'
