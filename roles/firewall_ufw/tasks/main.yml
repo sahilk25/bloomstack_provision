@@ -18,3 +18,11 @@
   ufw:
     state: reloaded
     policy: allow
+- name: Download foo.conf
+  get_url:
+    url: https://github.com/chaifeng/ufw-docker/raw/master/ufw-docker
+    dest: /usr/local/bin/ufw-docker
+    mode: '0755'
+- name: ufw-docker install
+  shell: 'ufw-docker install'
+  become: yes
