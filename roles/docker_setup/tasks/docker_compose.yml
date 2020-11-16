@@ -7,14 +7,20 @@
 - name: create docker-compose
   template:
     src: 'templates/docker_compose.yaml.j2'
-    dest: '{{ frappe_home }}/docker/docker_compose.yaml'
+    dest: '{{ frappe_home }}/docker/docker-compose.yaml'
     owner: '{{ user_name }}'
     group: '{{ user_name }}'
     mode: '0755'
 - name: create frappe_db.conf
   template:
     src: 'templates/frappe_db.conf.j2'
-    dest: '{{ frappe_home }}/docker/db_conf/frappe_db.conf'
+    dest: '{{ frappe_home }}/docker/db_conf/frappe_db.cnf'
     owner: '{{ user_name }}'
     group: '{{ user_name }}'
     mode: '0755'
+
+- name: Run docker-compose up 
+  community.general.docker_compose:
+    project_src: '{{ frappe_home }}/docker'
+    build: no
+  register: docker_compose

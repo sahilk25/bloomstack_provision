@@ -1,0 +1,7 @@
+---
+# vars file for create_bench
+user_name: frappe
+frappe_path: https://github.com/Bloomstack/frappe.git
+frappe_branch: staging
+erpnext_path: https://github.com/Bloomstack/erpnext.git
+erpnext_branch: staging

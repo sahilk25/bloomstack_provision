@@ -9,7 +9,10 @@ services:
             MYSQL_ROOT_PASSWORD: admin@123
         volumes:
             - mariadb_vol:/var/lib/mysql
-            - ./db_conf:/etc/mysql/conf.d 
+        command:
+            - --collation-server=utf8mb4_unicode_ci
+            - --character-set-server=utf8mb4
+            - --character-set-client-handshake = FALSE
         ports:
             - "3306:3306"
     redis:
