@@ -1,23 +1,22 @@
 ---
 # tasks file for firewall_ufw
-- name: allow ssh to ufw
-  ufw:
-    rule: limit
-    port: ssh
-    proto: tcp
-- name: Allow all access to tcp port 80
-  ufw:
-    rule: allow
-    port: '80'
-    proto: tcp
+- name: allow ssh
+  community.general.ufw:
+      rule: limit
+      port: ssh
+      proto: tcp
+- name: allow ssh
+  community.general.ufw:
+      rule: allow
+      port: '80'
+      proto: tcp
 - name: Allow everything and enable UFW
-  ufw:
+  community.general.ufw:
     state: enabled
-    policy: allow
-- name: Allow everything and enable UFW
-  ufw:
-    state: reloaded
-    policy: allow
+- name: Make sure a service is running
+  systemd:
+    state: started
+    name: ufw
 - name: Download foo.conf
   get_url:
     url: https://github.com/chaifeng/ufw-docker/raw/master/ufw-docker

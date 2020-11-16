@@ -1,0 +1,51 @@
+---
+# tasks file for create_bench
+- name: creating bench
+  command: 'bench init frappe-test --frappe-path {{ frappe_path }} --frappe-branch {{ frappe_branch }} --skip-redis-config-generation'
+  become_user: '{{ user_name }}'
+  args:
+    chdir: '/home/{{ user_name }}/'
+- name: dns_multitenant on
+  command: 'bench config dns_multitenant on'
+  become_user: '{{ user_name }}'
+  args:
+    chdir: '/home/{{ user_name }}/frappe-test'
+- name: setup sudoers
+  command: '{{ item }}'
+  with_items:
+    - 'sudo bench setup sudoers {{ user_name }}'
+    # - 'sudo bench setup nginx'
+  become: yes
+  args:
+    chdir: '/home/{{ user_name }}/frappe-test'
+- name: setting mariadb and redis in commonsite_config
+  command: '{{ item }}'
+  with_items:
+    - 'bench set-mariadb-host 0.0.0.0'
+    - 'bench set-redis-cache-host 0.0.0.0:6379/1'
+    - 'bench set-redis-queue-host 0.0.0.0:6379/2'
+    - 'bench set-redis-socketio-host 0.0.0.0:6379/3'
+  become_user: '{{ user_name }}'
+  args:
+    chdir: '/home/{{ user_name }}/frappe-test'
+- name: get erpnext
+  command: '{{ item }}'
+  with_items:
+    - 'bench get-app erpnext {{ erpnext_path }} --branch {{ erpnext_branch }}'
+  become_user: '{{ user_name }}'
+  args:
+    chdir: '/home/{{ user_name }}/frappe-test'
+- name: setup nginx
+  command: '{{ item }}'
+  with_items:
+    - 'bench setup nginx'
+  become_user: '{{ user_name }}'
+  args:
+    chdir: '/home/{{ user_name }}/frappe-test'
+
+- name: Create a symbolic link
+  file:
+    src: /home/{{ user_name }}/frappe-test/config/nginx.conf
+    dest: /etc/nginx/conf.d/frappe-test.conf
+    state: link
+  become: yes

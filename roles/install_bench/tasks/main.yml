@@ -58,3 +58,6 @@
 #     line: '{{ user_name }} ALL = (root) /usr/local/bin/bench'
 #     validate: /usr/sbin/visudo -cf %s
 #   become: yes
+- name: max_user_Watch
+  shell: 'echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p'
+  become: yes
