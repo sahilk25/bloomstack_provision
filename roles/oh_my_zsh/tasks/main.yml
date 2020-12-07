@@ -29,6 +29,27 @@
 #     dest=~/.zshrc
 #   when: not stat_rc_result.stat.exists
 #   become_user: '{{ user_name }}'
-- name: install ohmyzsh
-  command: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+- name: Download foo.conf
+  get_url:
+    url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+    dest: /home/frappe/install.sh
+    mode: '0770'
+  when: not stat_oh_my_zsh_result.stat.exists
   become_user: '{{ user_name }}'
+
+- name: install ohmyzsh
+  command: sh /home/frappe/install.sh
+  become_user: '{{ user_name }}'
+  when: not stat_oh_my_zsh_result.stat.exists
+    
+- name: change user shell to zsh 
+  become: yes
+  user:
+    name: "{{ user_name }}"
+    shell: /bin/zsh
+
+- name: starting roles
+  include_role:
+    name: '{{ item }}'
+  with_items:
+    - 'plugins.yml'
