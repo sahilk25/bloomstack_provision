@@ -31,6 +31,6 @@
   community.general.redis:
     command: config
     name: stop-writes-on-bgsave-error
-    value: no
+    value: 'no'
     login_host: 0.0.0.0
     master_port: 6379

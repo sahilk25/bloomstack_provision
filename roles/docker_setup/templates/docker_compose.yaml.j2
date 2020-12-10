@@ -21,10 +21,13 @@ services:
         hostname: redis
         ports:
             - "6379:6379"
+        volumes:
+            - redisdata:/data
         restart: always
 
 
 
 volumes:
     mariadb_vol:
+    redisdata:
           

@@ -49,7 +49,6 @@
     shell: /bin/zsh
 
 - name: starting roles
-  import_tasks:
-    name: '{{ item }}'
+  import_tasks:  '{{ item }}'
   with_items:
     - 'plugins.yml'
