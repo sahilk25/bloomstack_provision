@@ -32,6 +32,9 @@
   command: '{{ item }}'
   with_items:
     - 'bench get-app erpnext {{ erpnext_path }} --branch {{ erpnext_branch }}'
+    - 'bench get-app erpnext {{ bloomstack_core_path }} --branch {{ bloomstack_core_branch }}'
+    - 'bench setup requirements'
+    - 'bench build'
   become_user: '{{ user_name }}'
   args:
     chdir: '/home/{{ user_name }}/frappe-test'

@@ -1,0 +1,38 @@
+---
+- name: Check if stat_zsh-syntax-highlighting_result exists
+  stat:
+    path: /home/{{ user_name }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+  register: stat_zsh_syntax_highlighting_result
+- name: Check if stat_zsh-autosuggestions_result exists
+  stat:
+    path: /home/{{ user_name }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+  register: stat_zsh_autosuggestions_result
+- name: Check if alias-tips_result exists
+  stat:
+    path: /home/{{ user_name }}/.oh-my-zsh/custom/plugins/alias-tips
+  register: stat_alias_tips_result
+
+- name: Git checkout
+  git:
+    repo: 'https://github.com/zsh-users/zsh-syntax-highlighting.git'
+    dest: '/home/{{ user_name }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting'
+  become_user: '{{ user_name }}'
+  when: not stat_zsh_syntax_highlighting_result.stat.exists
+- name: Git checkout
+  git:
+    repo: 'https://github.com/zsh-users/zsh-autosuggestions'
+    dest: '/home/{{ user_name }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions'
+  become_user: '{{ user_name }}'
+  when: not stat_zsh_autosuggestions_result.stat.exists
+- name: Git checkout
+  git:
+    repo: 'https://github.com/djui/alias-tips.git'
+    dest: '/home/{{ user_name }}/.oh-my-zsh/custom/plugins/alias-tips'
+  become_user: '{{ user_name }}'
+  when: not stat_alias_tips_result.stat.exists
+
+- name: Ensure plugins are set
+  lineinfile:
+    path: '/home/{{ user_name }}/.zshrc'
+    regexp: 'plugins='
+    line: 'plugins=(git zsh-syntax-highlighting zsh-autosuggestions alias-tips python pyenv ubuntu docker)'
