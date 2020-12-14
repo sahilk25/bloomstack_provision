@@ -22,6 +22,7 @@
     executable: pip3
   with_items:
     - "docker-compose"
+    - "redis"
   become: yes
 
 - name: doing docker-compose

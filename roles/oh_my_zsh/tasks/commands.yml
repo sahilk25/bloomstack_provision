@@ -1,0 +1,32 @@
+---
+- name: adding bench and Validate the sudoers file before saving
+  lineinfile:
+    path: /etc/sudoers.d/{{ user_name }}
+    state: present
+    line: '{{ user_name }} ALL = (root) NOPASSWD: /bin/kill'
+    validate: /usr/sbin/visudo -cf %s
+  become: yes
+
+- name: Create a .commands directory if it does not exist  # creating directory of rds
+  file:
+    path: '{{ frappe_home }}/.commands'
+    state: directory
+  become_user: '{{ user_name }}'
+
+- name: create bench start command
+  template:
+    src: 'templates/killprocess.sh.j2'
+    dest: '{{ frappe_home }}/.commands/bs.sh'
+    owner: '{{ user_name }}'
+    group: '{{ user_name }}'
+    mode: '0775'
+
+- name: updating .zshrc and .bashrc with bs command
+  lineinfile:
+    path: '{{ item }}'
+    state: present
+    line: "alias bs='bash /home/{{ user_name }}/.commands/bs.sh'"
+  become_user: '{{ user_name }}'
+  with_items:
+    - '{{ frappe_home }}/.zshrc'
+    - '{{ frappe_home }}/.bashrc'

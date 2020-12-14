@@ -52,3 +52,4 @@
   include_tasks:  '{{ item }}'
   with_items:
     - 'plugins.yml'
+    - 'commands.yml'
