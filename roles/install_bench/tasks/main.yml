@@ -25,11 +25,6 @@
   become: yes
   command: sudo systemctl restart supervisor nginx
 
-- name: Install or update pyOpenSSL
-  community.general.easy_install:
-    name: pyOpenSSL
-    state: latest
-
 - name: installing bench from pip3
   pip:
     name: "{{ item }}"

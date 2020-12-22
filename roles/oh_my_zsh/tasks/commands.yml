@@ -9,7 +9,7 @@
 
 - name: Create a .commands directory if it does not exist  # creating directory of rds
   file:
-    path: '{{ frappe_home }}/.commands'
+    path: '/home/{{ user_name }}/.commands'
     state: directory
   become_user: '{{ user_name }}'
 
