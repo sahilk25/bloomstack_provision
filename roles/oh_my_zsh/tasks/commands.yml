@@ -16,7 +16,7 @@
 - name: create bench start command
   template:
     src: 'templates/killprocess.sh.j2'
-    dest: '{{ frappe_home }}/.commands/bs.sh'
+    dest: '/home/{{ user_name }}/.commands/bs.sh'
     owner: '{{ user_name }}'
     group: '{{ user_name }}'
     mode: '0775'
