@@ -9,6 +9,7 @@
       - 'mysql-client'
       - 'xfonts-75dpi'
       - 'redis-tools'
+      - 'jq'
     state: present
   become: true
 
