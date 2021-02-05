@@ -10,3 +10,9 @@
     ssh_key_file: .ssh/id_rsa
   become: yes
   become_method: "sudo"
+
+- name: create authorized_keys file
+  ansible.builtin.file:
+    path: '/home/{{ user_name }}/.ssh/authorized_keys'
+    state: touch
+    mode: '644'

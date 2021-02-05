@@ -2,3 +2,4 @@
 # vars file for install_bench
 node_version: '14'
 user_name: frappe
+mysql_root_pass: 'admin@123'

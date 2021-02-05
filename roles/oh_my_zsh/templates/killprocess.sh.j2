@@ -21,7 +21,7 @@ then
             fi
         done
     fi
-    killall -s KILL node
+    #killall -s KILL node
     redis-cli -h 0.0.0.0  config set stop-writes-on-bgsave-error no
     bench start
     

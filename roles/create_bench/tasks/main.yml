@@ -1,7 +1,7 @@
 ---
 # tasks file for create_bench
 - name: creating bench
-  command: 'bench init frappe-test --frappe-path {{ frappe_path }} --frappe-branch {{ frappe_branch }} --skip-redis-config-generation'
+  command: 'bench init frappe-test --frappe-path {{ frappe_path }} --frappe-branch {{ frappe_branch }} --skip-redis-config-generation --python /usr/bin/python3.6'
   become_user: '{{ user_name }}'
   args:
     chdir: '/home/{{ user_name }}/'
