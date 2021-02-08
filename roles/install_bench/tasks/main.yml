@@ -25,6 +25,22 @@
   become: True
   when: ansible_facts['distribution_major_version'] == "20"
 
+- name: Add specified repository into sources list
+  ansible.builtin.apt_repository:
+    repo: ppa:deadsnakes/ppa
+    state: present
+  become: true
+  when: ansible_facts['distribution_major_version'] == "20"
+
+- name: Install a list of packages
+  apt:
+    pkg:
+    - 'python3.6'
+    state: present
+  become: true
+  when: ansible_facts['distribution_major_version'] == "20"
+  
+
 - name: Ensure supervisor launches on boot
   become: yes
   command: sudo systemctl enable supervisor nginx
@@ -79,4 +95,4 @@
   become_user: '{{ user_name }}'
 
 - name: configure mysql
-  shell: mysql -u root -h 0.0.0.0 -padmin{{ mysql_root_pass }} -e "set global net_buffer_length=1000000;set global max_allowed_packet=1000000000;FLUSH PRIVILEGES;"
+  shell: mysql -u root -h 0.0.0.0 -p{{ mysql_root_pass }} -e "set global net_buffer_length=1000000;set global max_allowed_packet=1000000000;FLUSH PRIVILEGES;"
