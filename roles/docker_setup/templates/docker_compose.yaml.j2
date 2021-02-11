@@ -6,7 +6,7 @@ services:
         image: mariadb:10.3
         restart: always
         environment:
-            MYSQL_ROOT_PASSWORD: admin@123
+            MYSQL_ROOT_PASSWORD: {{ mysql_root_pass }}
         volumes:
             - mariadb_vol:/var/lib/mysql
         command:

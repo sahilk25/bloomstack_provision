@@ -10,13 +10,37 @@
       - 'xfonts-75dpi'
       - 'redis-tools'
       - 'jq'
+      - 'python3-testresources'
     state: present
   become: true
 
-- name: Install wkhtmltopdf
+- name: Install wkhtmltopdf for ubuntu 18
   apt:
     deb: https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb
   become: True
+  when: ansible_facts['distribution_major_version'] == "18"
+
+- name: Install wkhtmltopdf for ubuntu20
+  apt:
+    deb: https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.focal_amd64.deb
+  become: True
+  when: ansible_facts['distribution_major_version'] == "20"
+
+- name: Add specified repository into sources list
+  ansible.builtin.apt_repository:
+    repo: ppa:deadsnakes/ppa
+    state: present
+  become: true
+  when: ansible_facts['distribution_major_version'] == "20"
+
+- name: Install a list of packages
+  apt:
+    pkg:
+    - 'python3.6'
+    state: present
+  become: true
+  when: ansible_facts['distribution_major_version'] == "20"
+  
 
 - name: Ensure supervisor launches on boot
   become: yes
@@ -62,3 +86,14 @@
 - name: max_user_Watch
   shell: 'echo fs.inotify.max_user_watches=131072 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p'
   become: yes
+
+- name: Ensure redis config"
+  ansible.builtin.cron:
+    name: "check dirs"
+    minute: "*/5"
+    hour: "0"
+    job: "redis-cli -h 0.0.0.0 config set replica-read-only no && redis-cli -h 0.0.0.0 config set stop-writes-on-bgsave-error no"
+  become_user: '{{ user_name }}'
+
+- name: configure mysql
+  shell: mysql -u root -h 0.0.0.0 -p{{ mysql_root_pass }} -e "set global net_buffer_length=1000000;set global max_allowed_packet=1000000000;FLUSH PRIVILEGES;"

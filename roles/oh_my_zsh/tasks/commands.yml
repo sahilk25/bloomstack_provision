@@ -14,7 +14,7 @@
   become_user: '{{ user_name }}'
 
 - name: create bench start command
-  template:
+  ansible.builtin.copy:
     src: 'templates/killprocess.sh.j2'
     dest: '/home/{{ user_name }}/.commands/bs.sh'
     owner: '{{ user_name }}'
