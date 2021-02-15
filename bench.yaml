@@ -16,3 +16,8 @@
       - 'firewall_ufw'
       - 'create_bench'
       - 'oh_my_zsh'
+
+  - name: production_mode
+    include_role:
+      name: 'production_mode'
+    when: production_mode == 'y'

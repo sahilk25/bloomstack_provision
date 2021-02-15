@@ -1,0 +1,5 @@
+---
+# vars file for production_mode
+user_name: frappe
+frappe_home: /home/{{ user_name }}
+bench_name: frappe-test
