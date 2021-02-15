@@ -1,7 +1,7 @@
 ---
 # tasks file for create_bench
 - name: creating bench
-  command: 'bench init frappe-test --frappe-path {{ frappe_path }} --frappe-branch {{ frappe_branch }} --skip-redis-config-generation --python /usr/bin/python3.6'
+  command: 'bench init {{ bench_name }} --frappe-path {{ frappe_path }} --frappe-branch {{ frappe_branch }} --skip-redis-config-generation --python /usr/bin/python3.6'
   become_user: '{{ user_name }}'
   args:
     chdir: '/home/{{ user_name }}/'
@@ -9,7 +9,7 @@
   command: 'bench config dns_multitenant on'
   become_user: '{{ user_name }}'
   args:
-    chdir: '/home/{{ user_name }}/frappe-test'
+    chdir: '/home/{{ user_name }}/{{ bench_name }}'
 - name: setup sudoers
   command: '{{ item }}'
   with_items:
@@ -17,7 +17,7 @@
     # - 'sudo bench setup nginx'
   become: yes
   args:
-    chdir: '/home/{{ user_name }}/frappe-test'
+    chdir: '/home/{{ user_name }}/{{ bench_name }}'
 - name: setting mariadb and redis in commonsite_config
   command: '{{ item }}'
   with_items:
@@ -27,28 +27,28 @@
     - 'bench set-redis-socketio-host 0.0.0.0:6379/3'
   become_user: '{{ user_name }}'
   args:
-    chdir: '/home/{{ user_name }}/frappe-test'
+    chdir: '/home/{{ user_name }}/{{ bench_name }}'
 - name: get erpnext
   command: '{{ item }}'
   with_items:
-    - 'bench get-app erpnext {{ erpnext_path }} --branch {{ erpnext_branch }}'
-    - 'bench get-app erpnext {{ bloomstack_core_path }} --branch {{ bloomstack_core_branch }}'
+    - 'bench get-app  {{ erpnext_path }} --branch {{ erpnext_branch }}'
+    - 'bench get-app  {{ bloomstack_core_path }} --branch {{ bloomstack_core_branch }}'
     - 'bench setup requirements'
     - 'bench build'
   become_user: '{{ user_name }}'
   args:
-    chdir: '/home/{{ user_name }}/frappe-test'
+    chdir: '/home/{{ user_name }}/{{ bench_name }}'
 - name: setup nginx
   command: '{{ item }}'
   with_items:
     - 'bench setup nginx'
   become_user: '{{ user_name }}'
   args:
-    chdir: '/home/{{ user_name }}/frappe-test'
+    chdir: '/home/{{ user_name }}/{{ bench_name }}'
 
 - name: Create a symbolic link
   file:
-    src: /home/{{ user_name }}/frappe-test/config/nginx.conf
-    dest: /etc/nginx/conf.d/frappe-test.conf
+    src: /home/{{ user_name }}/{{ bench_name }}/config/nginx.conf
+    dest: /etc/nginx/conf.d/{{ bench_name }}.conf
     state: link
   become: yes

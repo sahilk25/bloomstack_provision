@@ -1,0 +1,29 @@
+---
+# tasks file for production_mode
+- name: create supervisor conf
+  template:
+    src: 'templates/supervisor.conf.j2'
+    dest: '{{ frappe_home }}/{{ bench_name }}/config/supervisor.conf'
+    owner: '{{ user_name }}'
+    group: '{{ user_name }}'
+    mode: '0766'
+  become_user: '{{ user_name }}'
+
+- name: Create a symbolic link
+  ansible.builtin.file:
+    src: '{{ frappe_home }}/{{ bench_name }}/config/supervisor.conf'
+    dest: '/etc/supervisor/conf.d/{{ bench_name }}.conf'
+    owner: root
+    group: root
+    mode: '0776'
+    state: link
+
+- name: Make sure a supervisor service is running
+  ansible.builtin.systemd:
+    state: restarted
+    name: supervisor
+
+# - name: Manage the state of program to be in started state
+#   community.general.supervisorctl:
+#     name: all
+#     state: restarted

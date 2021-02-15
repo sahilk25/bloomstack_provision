@@ -1,3 +1,4 @@
 ---
 # vars file for oh_my_zsh
 user_name: frappe
+frappe_home: /home/{{ user_name }}
