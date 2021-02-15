@@ -1,5 +1,5 @@
 # bloomstack_provision
-**this is for ubuntu 18.04**
+**this is for ubuntu 18.04 & 20.04**
 ```
 sudo su
 wget https://raw.githubusercontent.com/sahilk25/bloomstack_provision/staging/install.sh
