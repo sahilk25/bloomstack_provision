@@ -22,7 +22,21 @@
   ansible.builtin.systemd:
     state: restarted
     name: supervisor
+  
+- name: make sure supervisor will run on bench restart
+  ansible.builtin.replace:
+    path: '{{ frappe_home }}/{{ bench_name }}/sites/common_site_config.json'
+    regexp: '"restart_supervisor_on_update": false'
+    replace: '"restart_supervisor_on_update": true'
 
+- name: create .vimrc
+  ansible.builtin.copy:
+    src: 'templates/vimrc.j2'
+    dest: '{{ frappe_home }}/.vimrc'
+    owner: '{{ user_name }}'
+    group: '{{ user_name }}'
+    mode: '0766'
+  become_user: '{{ user_name }}'
 # - name: Manage the state of program to be in started state
 #   community.general.supervisorctl:
 #     name: all
