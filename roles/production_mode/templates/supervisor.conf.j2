@@ -3,7 +3,7 @@
 ; killasgroup=true --> send kill signal to child processes too
 
 [program:{{ bench_name }}-frappe-web]
-command=/home/frappe/{{ bench_name }}/env/bin/gunicorn -b 127.0.0.1:8001 -w 4 -t 120 frappe.app:application --preload
+command=/home/frappe/{{ bench_name }}/env/bin/gunicorn -b 127.0.0.1:8000 -w 4 -t 120 frappe.app:application --preload
 priority=4
 autostart=true
 autorestart=true
