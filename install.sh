@@ -75,7 +75,7 @@ else
 fi
 
 apt update -y
-apt install python3-pip git cowsay file -y
+apt install python3-pip python3-setuptools git cowsay file -y
 pip3 install --upgrade pip
 python3 -m easy_install --upgrade pyOpenSSL
 pip3 install ansible redis
