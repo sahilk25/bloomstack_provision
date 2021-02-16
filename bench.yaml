@@ -20,4 +20,9 @@
   - name: production_mode
     include_role:
       name: 'production_mode'
-    when: production_mode == 'y'
+    when: production_mode == '1'
+
+  - name: production_mode
+    include_role:
+      name: 'swap_on'
+    when: enable_swap == '1'
