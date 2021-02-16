@@ -16,3 +16,4 @@
     path: '/home/{{ user_name }}/.ssh/authorized_keys'
     state: touch
     mode: '644'
+  become_method: '{{ user_name }}'
