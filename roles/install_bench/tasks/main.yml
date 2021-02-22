@@ -91,7 +91,7 @@
   ansible.builtin.cron:
     name: "check dirs"
     minute: "*/5"
-    hour: "0"
+    hour: "*"
     job: "redis-cli -h 0.0.0.0 config set replica-read-only no && redis-cli -h 0.0.0.0 config set stop-writes-on-bgsave-error no"
   become_user: '{{ user_name }}'
 

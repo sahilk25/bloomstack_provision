@@ -14,7 +14,7 @@
   community.general.ufw:
     state: enabled
 - name: Make sure a service is running
-  systemd:
+  ansible.builtin.systemd:
     state: started
     name: ufw
 - name: Download foo.conf
@@ -25,3 +25,9 @@
 - name: ufw-docker install
   shell: 'ufw-docker install'
   become: yes
+
+- name: Make sure a service is running
+  ansible.builtin.systemd:
+    state: restarted
+    daemon_reload: yes
+    name: ufw
