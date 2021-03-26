@@ -1,0 +1,24 @@
+---
+- name: load var from file
+  include_vars:
+    file: '/home/{{ user_name }}/{{ bench_name }}/sites/common_site_config.json'
+    name: imported_var
+  become_user: '{{ user_name }}'
+
+- name: load var
+  debug:
+    var: imported_var
+
+- name: append more key/values
+  set_fact:
+    imported_var: "{{ imported_var | default([]) | combine({ 'mute_emails': true }) }}"
+
+- name: load var
+  debug:
+    var: imported_var
+
+- name: write var to file
+  copy: 
+    content: "{{ imported_var | to_nice_json }}" 
+    dest: '/home/{{ user_name }}/{{ bench_name }}/sites/common_site_config.json.new'
+  become_user: '{{ user_name }}'
