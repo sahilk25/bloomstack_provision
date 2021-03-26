@@ -20,5 +20,5 @@
 - name: write var to file
   copy: 
     content: "{{ imported_var | to_nice_json }}" 
-    dest: '/home/{{ user_name }}/{{ bench_name }}/sites/common_site_config.json.new'
+    dest: '/home/{{ user_name }}/{{ bench_name }}/sites/common_site_config.json'
   become_user: '{{ user_name }}'
