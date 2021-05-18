@@ -22,8 +22,10 @@
     url: https://github.com/chaifeng/ufw-docker/raw/master/ufw-docker
     dest: /usr/local/bin/ufw-docker
     mode: '0755'
+  when: docker_Setup == '1'
 - name: ufw-docker install
   shell: 'ufw-docker install'
+  when: docker_Setup == '1'
   become: yes
 
 - name: Make sure a service is running

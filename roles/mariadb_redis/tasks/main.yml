@@ -1,0 +1,57 @@
+---
+- name: Add an Apt signing key, uses whichever key is at the URL
+  ansible.builtin.apt_key:
+    url: https://mariadb.org/mariadb_release_signing_key.asc
+    state: present
+  become: true
+
+
+- name: Add specified repository into sources list
+  ansible.builtin.apt_repository:
+    repo: 'deb [arch=amd64,arm64,ppc64el] https://mirror.jit.ac.in/mariadb/repo/10.3/ubuntu focal main'
+    state: present
+  become: true
+  when: ansible_facts['distribution_major_version'] == "20"
+
+
+- name: Install a list of packages
+  apt:
+    pkg:
+      - 'mariadb-server-10.3'
+      - 'redis-server'
+    state: present
+  become: true
+
+# create root .my.cnf config file
+- name: Add .my.cnf
+  template: src=frappe_db.conf.j2 dest=/etc/mysql/my.cnf owner=root group=root mode=0600
+  become: true
+
+# Set root password
+# UPDATE mysql.user SET Password=PASSWORD('mysecret') WHERE User='root';
+# FLUSH PRIVILEGES;
+
+- name: Set root Password
+  community.mysql.mysql_user:
+    login_password: '{{mysql_root_pass }}'
+    check_implicit_admin: yes
+    name: root
+    password: '{{ mysql_root_pass }}'
+    host: '{{ item }}'
+    state: present
+  with_items:
+    - localhost
+    - 127.0.0.1
+    - ::1
+  become: true
+
+- name: Reload privilege tables
+  command: 'mysql -ne "{{ item }}"'
+  with_items:
+    - FLUSH PRIVILEGES
+    - DELETE FROM mysql.user WHERE User=''
+    - DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')
+    - DROP DATABASE IF EXISTS test
+    - DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%'
+    - FLUSH PRIVILEGES
+  changed_when: False

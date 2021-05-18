@@ -11,6 +11,8 @@
       - 'redis-tools'
       - 'jq'
       - 'python3-testresources'
+      - 'dirmngr'
+      - 'apt-transport-https'
     state: present
   become: true
 
