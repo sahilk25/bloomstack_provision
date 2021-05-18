@@ -18,6 +18,10 @@ read_ENABLE_SWAP() {
     read -p 'Do you want to Enable SWAP 4GB (y/n): ' ENABLE_SWAP
 }
 
+read_DOCKER_SETUP() {
+    read -p 'Do you want to install mariadb and redis via Docker (y/n): ' DOCKER_SETUP
+}
+
 read_mysql_pass
 
 
@@ -33,6 +37,25 @@ echo ""
 read_BENCH_NAME
 echo "=============================================="
 echo ""
+echo "=============================================="
+
+
+if [  $DOCKER_SETUP =  'y' ]
+then
+    echo "mariadb and redis Docker install"
+    DOCKER_SETUP='1'
+elif [  $DOCKER_SETUP =  'n' ]
+then
+    echo "mariadb and redis normal install"
+    DOCKER_SETUP='0'
+else
+    echo "please give ans in y or n"
+    read_DOCKER_SETUP
+fi
+echo "=============================================="
+echo "=============================================="
+
+
 if [ -z "$BENCH_NAME" ]
 then
     echo "Directory name cant be Empty $BENCH_NAME"
@@ -45,6 +68,8 @@ echo ""
 read_production_mode
 echo "=============================================="
 echo ""
+
+
 if [  $PRODUCTION_MODE =  'y' ]
 then
     echo "Will set bench on production"
@@ -81,5 +106,6 @@ python3 -m easy_install --upgrade pyOpenSSL
 pip3 install ansible redis
 git clone https://github.com/sahilk25/bloomstack_provision.git
 cd bloomstack_provision
+git checkout docker_optional
 cowsay -f tux starting ansible script~
-ansible-playbook bench.yaml -vv -e mysql_root_pass=$MYSQL_ROOT_PASS -e bench_name=$BENCH_NAME -e production_mode=$PRODUCTION_MODE -e enable_swap=$ENABLE_SWAP
+ansible-playbook bench.yaml -vv -e mysql_root_pass=$MYSQL_ROOT_PASS -e bench_name=$BENCH_NAME -e production_mode=$PRODUCTION_MODE -e enable_swap=$ENABLE_SWAP -e docker_setup=$DOCKER_SETUP
