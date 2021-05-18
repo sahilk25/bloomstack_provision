@@ -21,8 +21,11 @@
   when: docker_setup == '1'
 
 - name: bench setup production
-  command: 'bench setup production {{ user_name }}'
+  command: '{{ items }}'
   become_user: '{{ user_name }}'
+  with_items:
+    - 'bench setup sudoers {{ user_name }}'
+    - 'bench setup production {{ user_name }}'
   args:
     chdir: '/home/{{ user_name }}/{{ bench_name }}'
   when: docker_setup == '0'
