@@ -47,7 +47,7 @@
   become: true
 
 - name: Reload privilege tables
-  command: 'mysql -ne "{{ item }}"'
+  command: 'mysql -u root -p{{  mysql_root_pass }} -ne "{{ item }}"'
   with_items:
     - FLUSH PRIVILEGES
     - DELETE FROM mysql.user WHERE User=''
