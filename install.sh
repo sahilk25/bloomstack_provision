@@ -34,12 +34,10 @@ else
 fi
 echo "=============================================="
 echo ""
-read_BENCH_NAME
-echo "=============================================="
-echo ""
-echo "=============================================="
 
 
+
+read_DOCKER_SETUP
 if [  $DOCKER_SETUP =  'y' ]
 then
     echo "mariadb and redis Docker install"
@@ -55,7 +53,7 @@ fi
 echo "=============================================="
 echo "=============================================="
 
-
+read_BENCH_NAME
 if [ -z "$BENCH_NAME" ]
 then
     echo "Directory name cant be Empty $BENCH_NAME"
