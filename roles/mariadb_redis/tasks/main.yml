@@ -20,6 +20,7 @@
       - 'mariadb-server-10.3'
       - 'redis-server'
     state: present
+    update_cache: yes
   become: true
 
 # create root .my.cnf config file
