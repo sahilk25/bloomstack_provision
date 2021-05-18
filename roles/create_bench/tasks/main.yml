@@ -5,6 +5,14 @@
   become_user: '{{ user_name }}'
   args:
     chdir: '/home/{{ user_name }}/'
+  when: docker_setup == '1'
+
+- name: creating bench
+  command: 'bench init {{ bench_name }} --frappe-path {{ frappe_path }} --frappe-branch {{ frappe_branch }} --python /usr/bin/python3.6'
+  become_user: '{{ user_name }}'
+  args:
+    chdir: '/home/{{ user_name }}/'
+  when: docker_setup == '0'
 
 - name: dns_multitenant on
   command: 'bench config dns_multitenant on'
@@ -31,6 +39,7 @@
   become_user: '{{ user_name }}'
   args:
     chdir: '/home/{{ user_name }}/{{ bench_name }}'
+  when: docker_setup == '1'
 
 - name: get erpnext
   command: '{{ item }}'

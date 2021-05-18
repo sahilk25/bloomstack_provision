@@ -8,6 +8,7 @@
     group: '{{ user_name }}'
     mode: '0766'
   become_user: '{{ user_name }}'
+  when: docker_setup == '1'
 
 - name: Create a symbolic link
   ansible.builtin.file:
@@ -17,6 +18,15 @@
     group: root
     mode: '0776'
     state: link
+  when: docker_setup == '1'
+
+- name: bench setup production
+  command: 'bench setup production {{ user_name }}'
+  become_user: '{{ user_name }}'
+  args:
+    chdir: '/home/{{ user_name }}/{{ bench_name }}'
+  when: docker_setup == '0'
+  become: true
 
 - name: Make sure a supervisor service is running
   ansible.builtin.systemd:

@@ -6,7 +6,6 @@
       - 'nginx'
       - 'supervisor'
       - 'python3-pip'
-      - 'mysql-client'
       - 'xfonts-75dpi'
       - 'redis-tools'
       - 'jq'
@@ -16,6 +15,15 @@
     state: present
     update_cache: yes
   become: true
+
+- name: Install a list of packages
+  apt:
+    pkg:
+      - 'mysql-client'
+    state: present
+    update_cache: yes
+  become: true
+  when: docker_setup == '1'
 
 - name: Install wkhtmltopdf for ubuntu 18
   apt:
