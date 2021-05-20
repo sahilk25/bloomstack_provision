@@ -21,7 +21,7 @@
   when: docker_setup == '1'
 
 - name: bench setup production
-  command: '{{ items }}'
+  command: '{{ item }}'
   become_user: '{{ user_name }}'
   with_items:
     - 'bench setup sudoers {{ user_name }}'
