@@ -22,7 +22,6 @@
 
 - name: bench setup production
   command: '{{ item }}'
-  become_user: '{{ user_name }}'
   with_items:
     - 'bench setup sudoers {{ user_name }}'
     - 'bench setup production {{ user_name }}'
