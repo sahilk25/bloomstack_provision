@@ -6,12 +6,30 @@
     user_name: frappe
   tasks:
   
-  - name: starting roles
+  - name: setup user
     include_role:
       name: '{{ item }}'
     with_items:
       - 'frappe-user'
+
+  - name: setup docker
+    include_role:
+      name: '{{ item }}'
+    with_items:
       - 'docker_setup'
+    when: docker_setup == '1'
+
+  - name: setup mariadb
+    include_role:
+      name: '{{ item }}'
+    with_items:
+      - 'mariadb_redis'
+    when: docker_setup == '0'
+
+  - name: bench install
+    include_role:
+      name: '{{ item }}'
+    with_items:
       - 'install_bench'
       - 'firewall_ufw'
       - 'create_bench'

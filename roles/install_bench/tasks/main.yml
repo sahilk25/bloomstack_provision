@@ -6,13 +6,24 @@
       - 'nginx'
       - 'supervisor'
       - 'python3-pip'
-      - 'mysql-client'
       - 'xfonts-75dpi'
       - 'redis-tools'
       - 'jq'
       - 'python3-testresources'
+      - 'dirmngr'
+      - 'apt-transport-https'
     state: present
+    update_cache: yes
   become: true
+
+- name: Install a list of packages
+  apt:
+    pkg:
+      - 'mysql-client'
+    state: present
+    update_cache: yes
+  become: true
+  when: docker_setup == '1'
 
 - name: Install wkhtmltopdf for ubuntu 18
   apt:
@@ -94,6 +105,8 @@
     hour: "*"
     job: "redis-cli -h 0.0.0.0 config set replica-read-only no && redis-cli -h 0.0.0.0 config set stop-writes-on-bgsave-error no"
   become_user: '{{ user_name }}'
+  when: docker_setup == '1'
 
 - name: configure mysql
   shell: mysql -u root -h 0.0.0.0 -p{{ mysql_root_pass }} -e "set global net_buffer_length=1000000;set global max_allowed_packet=1000000000;FLUSH PRIVILEGES;"
+  when: docker_setup == '1'
