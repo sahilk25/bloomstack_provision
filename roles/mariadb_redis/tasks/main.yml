@@ -25,7 +25,7 @@
 
 # create root .my.cnf config file
 - name: Add .my.cnf
-  template: src=frappe_db.conf.j2 dest=/etc/mysql/my.cnf owner=root group=root mode=0600
+  template: src=frappe_db.conf.j2 dest=/etc/mysql/my.cnf owner=root group=root mode=0744
   become: true
 
 # Set root password
