@@ -66,7 +66,7 @@
     name: "{{ item }}"
     executable: pip3
   with_items:
-    - "git+https://github.com/DigiThinkIT/bench.git@master"
+    - "frappe-bench"
     - "PyMySQL"
   become: yes
 
