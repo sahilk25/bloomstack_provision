@@ -32,6 +32,7 @@
   ansible.builtin.systemd:
     state: restarted
     name: mariadb
+  become: true
 # Set root password
 # UPDATE mysql.user SET Password=PASSWORD('mysecret') WHERE User='root';
 # FLUSH PRIVILEGES;
