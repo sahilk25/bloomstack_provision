@@ -27,7 +27,11 @@
 - name: Add .my.cnf
   template: src=frappe_db.conf.j2 dest=/etc/mysql/my.cnf owner=root group=root mode=0744
   become: true
-
+  
+- name: Make sure a mariadb service is running
+  ansible.builtin.systemd:
+    state: restarted
+    name: mariadb
 # Set root password
 # UPDATE mysql.user SET Password=PASSWORD('mysecret') WHERE User='root';
 # FLUSH PRIVILEGES;
