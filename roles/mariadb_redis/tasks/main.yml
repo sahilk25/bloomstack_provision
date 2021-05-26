@@ -83,7 +83,7 @@
     login_password: "{{  mysql_root_pass }}"
     query:
     - FLUSH PRIVILEGES
-    - DELETE FROM mysql.user WHERE User='';
+    - DELETE FROM mysql.user WHERE User=''
     - DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')
     - DROP DATABASE IF EXISTS test
     - DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%'
