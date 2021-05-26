@@ -4,14 +4,28 @@
     url: https://mariadb.org/mariadb_release_signing_key.asc
     state: present
   become: true
-
+  when: ansible_facts['distribution_major_version'] == "20"
 
 - name: Add specified repository into sources list
   ansible.builtin.apt_repository:
-    repo: 'deb [arch=amd64,arm64,ppc64el]deb [arch=amd64,arm64,ppc64el] http://sgp1.mirrors.digitalocean.com/mariadb/repo/10.3/ubuntu focal main focal main'
+    repo: 'deb [arch=amd64,arm64,ppc64el] http://sgp1.mirrors.digitalocean.com/mariadb/repo/10.3/ubuntu focal main
     state: present
   become: true
   when: ansible_facts['distribution_major_version'] == "20"
+
+- name: Add an Apt signing key, uses whichever key is at the URL
+  ansible.builtin.apt_key:
+    url: https://mariadb.org/mariadb_release_signing_key.asc
+    state: present
+  become: true
+  when: ansible_facts['distribution_major_version'] == "18"
+
+- name: Add specified repository into sources list
+  ansible.builtin.apt_repository:
+    repo: 'deb [arch=amd64,arm64,ppc64el] http://sgp1.mirrors.digitalocean.com/mariadb/repo/10.3/ubuntu bionic main'
+    state: present
+  become: true
+  when: ansible_facts['distribution_major_version'] == "18"
 
 
 - name: Install a list of packages
@@ -28,11 +42,6 @@
   template: src=frappe_db.conf.j2 dest=/etc/mysql/my.cnf owner=root group=root mode=0744
   become: true
   
-- name: Make sure a mariadb service is running
-  ansible.builtin.systemd:
-    state: restarted
-    name: mariadb
-  become: true
 # Set root password
 # UPDATE mysql.user SET Password=PASSWORD('mysecret') WHERE User='root';
 # FLUSH PRIVILEGES;
@@ -51,11 +60,17 @@
     - ::1
   become: true
 
+- name: Make sure a mariadb service is running
+  ansible.builtin.systemd:
+    state: restarted
+    name: mariadb
+  become: true
+
 - name: Reload privilege tables
-  command: 'mysql -u root -p{{  mysql_root_pass }} -ne "{{ item }}"'
+  command: 'mysql -u root -p{{  mysql_root_pass }} -ne {{ item }}'
   with_items:
-    - FLUSH PRIVILEGES
-    - DELETE FROM mysql.user WHERE User=''
+    - 'FLUSH PRIVILEGES;'
+    - 'DELETE FROM mysql.user WHERE User='';'
     - DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')
     - DROP DATABASE IF EXISTS test
     - DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%'
