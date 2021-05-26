@@ -8,7 +8,7 @@
 
 - name: Add specified repository into sources list
   ansible.builtin.apt_repository:
-    repo: 'deb [arch=amd64,arm64,ppc64el] http://sgp1.mirrors.digitalocean.com/mariadb/repo/10.3/ubuntu focal main
+    repo: 'deb [arch=amd64,arm64,ppc64el] http://sgp1.mirrors.digitalocean.com/mariadb/repo/10.3/ubuntu focal main'
     state: present
   become: true
   when: ansible_facts['distribution_major_version'] == "20"
@@ -66,13 +66,25 @@
     name: mariadb
   become: true
 
-- name: Reload privilege tables
-  command: 'mysql -u root -p{{  mysql_root_pass }} -ne {{ item }}'
-  with_items:
-    - 'FLUSH PRIVILEGES;'
-    - 'DELETE FROM mysql.user WHERE User='';'
+# - name: Reload privilege tables
+#   command: 'mysql -u root -p{{  mysql_root_pass }} -ne {{ item }}'
+#   with_items:
+#     - FLUSH PRIVILEGES
+#     - DELETE FROM mysql.user WHERE User='';
+#     - DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')
+#     - DROP DATABASE IF EXISTS test
+#     - DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%'
+#     - FLUSH PRIVILEGES
+#   changed_when: False
+
+- name: Run several insert queries against db test_db in single transaction
+  community.mysql.mysql_query:
+    login_user: root
+    login_password: "{{  mysql_root_pass }}"
+    query:
+    - FLUSH PRIVILEGES
+    - DELETE FROM mysql.user WHERE User='';
     - DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')
     - DROP DATABASE IF EXISTS test
     - DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%'
     - FLUSH PRIVILEGES
-  changed_when: False
