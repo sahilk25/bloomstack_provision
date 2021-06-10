@@ -5,28 +5,45 @@
       rule: limit
       port: ssh
       proto: tcp
-- name: allow ssh
+
+
+- name: allow http
   community.general.ufw:
       rule: allow
       port: '80'
       proto: tcp
+
+- name: allow https
+  community.general.ufw:
+      rule: allow
+      port: '443'
+      proto: tcp
+
 - name: Allow everything and enable UFW
   community.general.ufw:
     state: enabled
+
 - name: Make sure a service is running
   ansible.builtin.systemd:
     state: started
     name: ufw
+
 - name: Download foo.conf
   get_url:
     url: https://github.com/chaifeng/ufw-docker/raw/master/ufw-docker
     dest: /usr/local/bin/ufw-docker
     mode: '0755'
   when: docker_setup == '1'
+
 - name: ufw-docker install
   shell: 'ufw-docker install'
   when: docker_setup == '1'
   become: yes
+
+- name: starting sshd_conf tasks
+  include_tasks:  '{{ item }}'
+  with_items:
+    - 'sshd_conf.yml'
 
 - name: Make sure a service is running
   ansible.builtin.systemd:

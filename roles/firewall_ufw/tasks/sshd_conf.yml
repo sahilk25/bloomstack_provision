@@ -1,0 +1,34 @@
+---
+- name: AuthenticationMethods publickey
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^AuthenticationMethods'
+    line: 'AuthenticationMethods publickey'
+
+- name: PubkeyAuthentication yes
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^PubkeyAuthentication'
+    line: 'PubkeyAuthentication yes'
+
+- name: PermitEmptyPasswords no
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^PermitEmptyPasswords no'
+    line: 'PermitEmptyPasswords no'
+
+- name: PermitEmptyPasswords no
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^AllowUsers'
+    line: 'AllowUsers root {{ user_name }}'
+
+- name: Make sure a service is running
+  ansible.builtin.systemd:
+    state: restarted
+    daemon_reload: yes
+    name: sshd
