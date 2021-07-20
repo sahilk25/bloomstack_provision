@@ -1,7 +1,63 @@
 [mysqld]
+
+# MyISAM #
+key_buffer_size                = 128M
+myisam_recover                 = FORCE,BACKUP
+
+# SAFETY #
+max_allowed_packet             = 256M
+max_connect_errors             = 1000000
+innodb                         = FORCE
+
+# DATA STORAGE #
+datadir                        = /var/lib/mysql/
+
+# BINARY LOGGING #
+log_bin                        = /var/lib/mysql/mysql-bin
+expire_logs_days               = 14
+sync_binlog                    = 1
+
+# REPLICATION #
+server_id                      = 1
+
+# CACHES AND LIMITS #
+tmp_table_size                 = 128M
+max_heap_table_size            = 128M
+query_cache_type               = 0
+query_cache_size               = 0
+max_connections                = 500
+thread_cache_size              = 50
+open_files_limit               = 65535
+table_definition_cache         = 4096
+table_open_cache               = 10240
+
+# INNODB #
+innodb_flush_method            = O_DIRECT
+innodb_log_files_in_group      = 2
+innodb_log_file_size           = 512M
+innodb_flush_log_at_trx_commit = 2
+innodb_file_per_table          = 1
+innodb_buffer_pool_size        = {{ innodb_buffer_pool_size }}M
+innodb_file_format             = barracuda
+innodb_large_prefix            = 1
+collation-server               = utf8mb4_unicode_ci
+character-set-server           = utf8mb4
 character-set-client-handshake = FALSE
-character-set-server = utf8mb4
-collation-server = utf8mb4_unicode_ci
+max_allowed_packet             = 256M
+
+# LOGGING #
+log_error                      = /var/lib/mysql/mysql-error.log
+log_queries_not_using_indexes  = 0
+slow_query_log                 = 1
+slow_query_log_file            = /var/lib/mysql/mysql-slow.log
+
 
 [mysql]
 default-character-set = utf8mb4
+
+
+[mysqldump]
+max_allowed_packet=256M
+
+
+!includedir /etc/mysql/mariadb.conf.d/
