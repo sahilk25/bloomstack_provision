@@ -60,6 +60,15 @@
   args:
     chdir: '/home/{{ user_name }}/{{ bench_name }}'
 
+- name: setup developer_mode
+  command: '{{ item }}'
+  with_items:
+    - 'bench set-config -g developer_mode 1'
+  become_user: '{{ user_name }}'
+  args:
+    chdir: '/home/{{ user_name }}/{{ bench_name }}'
+  when: production_mode == '0'
+
 - name: Create a symbolic link
   file:
     src: /home/{{ user_name }}/{{ bench_name }}/config/nginx.conf

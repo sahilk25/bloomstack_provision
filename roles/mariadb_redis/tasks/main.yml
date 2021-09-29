@@ -37,9 +37,23 @@
     update_cache: yes
   become: true
 
+- name: set innodb-buffer-pool-size
+  set_fact:
+    innodb_buffer_pool_size: '{{ ansible_memtotal_mb * (8/10) }}'
+
+# # create root .my.cnf config file
+# - name: Add .my.cnf
+#   template: src=frappe_db.conf.j2 dest=/etc/mysql/my.cnf owner=root group=root mode=0744
+#   become: true
+
 # create root .my.cnf config file
 - name: Add .my.cnf
-  template: src=frappe_db.conf.j2 dest=/etc/mysql/my.cnf owner=root group=root mode=0744
+  ansible.builtin.template:
+    src: "frappe_db.conf.j2"
+    dest: "/etc/mysql/my.cnf"
+    owner: "root"
+    group: "root"
+    mode: "0744"
   become: true
   
 # Set root password
