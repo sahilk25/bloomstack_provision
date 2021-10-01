@@ -11,7 +11,7 @@
     repo: 'deb [arch=amd64,arm64,ppc64el] http://sgp1.mirrors.digitalocean.com/mariadb/repo/10.4/ubuntu focal main'
     state: present
   become: true
-  when: ansible_facts['distribution_major_version'] == "20"
+  when: ansible_facts['distribution_major_version'] == "20" | ansible_facts['distribution_major_version'] == "21"
 
 - name: Add an Apt signing key, uses whichever key is at the URL
   ansible.builtin.apt_key:
