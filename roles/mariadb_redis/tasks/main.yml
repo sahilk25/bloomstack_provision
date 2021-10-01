@@ -4,7 +4,7 @@
     url: https://mariadb.org/mariadb_release_signing_key.asc
     state: present
   become: true
-  when: ansible_facts['distribution_major_version'] == "20"
+  when: ansible_facts['distribution_major_version'] == "20" or ansible_facts['distribution_major_version'] == "21"
 
 - name: Add specified repository into sources list
   ansible.builtin.apt_repository:
@@ -31,7 +31,7 @@
 - name: Install a list of packages
   apt:
     pkg:
-      - 'mariadb-server==10.4'
+      - 'mariadb-server'
       - 'redis-server'
     state: present
     update_cache: yes
