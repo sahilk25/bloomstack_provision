@@ -8,7 +8,7 @@
 
 - name: Add specified repository into sources list
   ansible.builtin.apt_repository:
-    repo: 'deb [arch=amd64,arm64,ppc64el] http://sgp1.mirrors.digitalocean.com/mariadb/repo/10.3/ubuntu focal main'
+    repo: 'deb [arch=amd64,arm64,ppc64el] http://sgp1.mirrors.digitalocean.com/mariadb/repo/10.4/ubuntu focal main'
     state: present
   become: true
   when: ansible_facts['distribution_major_version'] == "20"
@@ -22,7 +22,7 @@
 
 - name: Add specified repository into sources list
   ansible.builtin.apt_repository:
-    repo: 'deb [arch=amd64,arm64,ppc64el] http://sgp1.mirrors.digitalocean.com/mariadb/repo/10.3/ubuntu bionic main'
+    repo: 'deb [arch=amd64,arm64,ppc64el] http://sgp1.mirrors.digitalocean.com/mariadb/repo/10.4/ubuntu bionic main'
     state: present
   become: true
   when: ansible_facts['distribution_major_version'] == "18"
