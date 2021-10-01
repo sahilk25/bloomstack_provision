@@ -31,7 +31,7 @@
 - name: Install a list of packages
   apt:
     pkg:
-      - 'mariadb-server'
+      - 'mariadb-server==10.4'
       - 'redis-server'
     state: present
     update_cache: yes
