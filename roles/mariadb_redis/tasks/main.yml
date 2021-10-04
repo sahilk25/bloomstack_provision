@@ -65,7 +65,7 @@
     login_password: '{{mysql_root_pass }}'
     check_implicit_admin: yes
     name: root
-    password: '{{ mysql_root_pass }}'
+    password: ''
     host: '{{ item }}'
     state: present
   with_items:
