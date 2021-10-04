@@ -39,7 +39,7 @@
 
 - name: set innodb-buffer-pool-size
   set_fact:
-    innodb_buffer_pool_size: '{{ ansible_memtotal_mb * (8/10) }}'
+    innodb_buffer_pool_size: '{{ ansible_memtotal_mb * (8/10) | round | init }}'
 
 # # create root .my.cnf config file
 # - name: Add .my.cnf
