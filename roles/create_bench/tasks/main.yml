@@ -82,10 +82,8 @@
 #write sql password in password.txt
 - name: wrote sql password
   ansible.builtin.lineinfile:
-    path: ./password.txt
+    path: '/home/{{ user_name }}/{{ bench_name }}/password.txt'
     state: present
     line: "sql_root_pass: {{ mysql_root_pass }}"
   become_user: '{{ user_name }}'
-  args:
-    chdir: '/home/{{ user_name }}/{{ bench_name }}'
   when: production_mode == '0'
