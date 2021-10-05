@@ -31,6 +31,7 @@
 - name: Write swap entry in fstab
   ansible.posix.mount: 
     src: '{{ swap_file_path }}'
+    path: none
     fstype: swap
     opts: sw
     state: present
