@@ -84,6 +84,7 @@
   ansible.builtin.lineinfile:
     path: '/home/{{ user_name }}/{{ bench_name }}/password.txt'
     state: present
+    create: yes
     line: "sql_root_pass: {{ mysql_root_pass }}"
   become_user: '{{ user_name }}'
   when: production_mode == '0'
